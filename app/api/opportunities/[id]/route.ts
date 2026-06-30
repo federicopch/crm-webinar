@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { deleteOpportunity, updateOpportunity } from "@/lib/sheets";
-import { isStage, type Opportunity } from "@/lib/types";
+import { isStage, normalizeProductos, type Opportunity } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -27,6 +27,9 @@ export async function PATCH(req: Request, { params }: Params) {
         return NextResponse.json({ error: "Etapa inválida." }, { status: 400 });
       }
       patch.etapa = body.etapa;
+    }
+    if (body?.productos !== undefined) {
+      patch.productos = normalizeProductos(body.productos);
     }
 
     if (Object.keys(patch).length === 0) {

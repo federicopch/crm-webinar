@@ -1,10 +1,17 @@
 import "server-only";
 import { GoogleSpreadsheet, type GoogleSpreadsheetWorksheet } from "google-spreadsheet";
 import { JWT } from "google-auth-library";
-import { type Opportunity, type Stage, isStage } from "./types";
+import {
+  type Opportunity,
+  type Stage,
+  type Product,
+  isStage,
+  parseProductos,
+  serializeProductos,
+} from "./types";
 
 const SHEET_TITLE = "Oportunidades";
-const HEADERS = ["id", "contacto", "empresa", "monto", "etapa"] as const;
+const HEADERS = ["id", "contacto", "empresa", "monto", "etapa", "productos"] as const;
 const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"];
 
 function getAuth(): JWT {
@@ -36,7 +43,17 @@ async function getSheet(): Promise<GoogleSpreadsheetWorksheet> {
       title: SHEET_TITLE,
       headerValues: [...HEADERS],
     });
+    return sheet;
   }
+
+  // Backfill: si el Sheet ya existía sin la columna "productos", la agregamos
+  // al final sin reordenar (reordenar desalinearía los datos existentes).
+  await sheet.loadHeaderRow().catch(() => {});
+  const headers = sheet.headerValues ?? [];
+  if (headers.length > 0 && !headers.includes("productos")) {
+    await sheet.setHeaderRow([...headers, "productos"]);
+  }
+
   return sheet;
 }
 
@@ -62,6 +79,7 @@ export async function listOpportunities(): Promise<Opportunity[]> {
         empresa: String(row.get("empresa") ?? "").trim(),
         monto: parseMonto(row.get("monto")),
         etapa,
+        productos: parseProductos(row.get("productos")),
       };
     })
     .filter((o): o is Opportunity => o !== null);
@@ -73,6 +91,7 @@ export async function createOpportunity(input: {
   empresa: string;
   monto: number;
   etapa: Stage;
+  productos: Product[];
 }): Promise<Opportunity> {
   const sheet = await getSheet();
   const opportunity: Opportunity = {
@@ -81,6 +100,7 @@ export async function createOpportunity(input: {
     empresa: input.empresa,
     monto: input.monto,
     etapa: input.etapa,
+    productos: input.productos,
   };
 
   await sheet.addRow({
@@ -89,6 +109,7 @@ export async function createOpportunity(input: {
     empresa: opportunity.empresa,
     monto: String(opportunity.monto),
     etapa: opportunity.etapa,
+    productos: serializeProductos(opportunity.productos),
   });
 
   return opportunity;
@@ -108,6 +129,8 @@ export async function updateOpportunity(
   if (patch.empresa !== undefined) row.set("empresa", patch.empresa);
   if (patch.monto !== undefined) row.set("monto", String(patch.monto));
   if (patch.etapa !== undefined) row.set("etapa", patch.etapa);
+  if (patch.productos !== undefined)
+    row.set("productos", serializeProductos(patch.productos));
 
   await row.save();
 
@@ -117,6 +140,7 @@ export async function updateOpportunity(
     empresa: String(row.get("empresa") ?? "").trim(),
     monto: parseMonto(row.get("monto")),
     etapa: (isStage(row.get("etapa")) ? row.get("etapa") : "Lead") as Stage,
+    productos: parseProductos(row.get("productos")),
   };
 }
 

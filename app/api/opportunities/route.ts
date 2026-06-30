@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createOpportunity, listOpportunities } from "@/lib/sheets";
-import { isStage } from "@/lib/types";
+import { isStage, normalizeProductos } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -40,8 +40,9 @@ export async function POST(req: Request) {
     if (!isStage(etapa)) {
       return NextResponse.json({ error: "Etapa inválida." }, { status: 400 });
     }
+    const productos = normalizeProductos(body?.productos);
 
-    const created = await createOpportunity({ contacto, empresa, monto, etapa });
+    const created = await createOpportunity({ contacto, empresa, monto, etapa, productos });
     return NextResponse.json(created, { status: 201 });
   } catch (err) {
     console.error("POST /api/opportunities", err);

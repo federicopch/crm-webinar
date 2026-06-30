@@ -2,8 +2,13 @@
 
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
-import { type Opportunity } from "@/lib/types";
+import { type Opportunity, type Product } from "@/lib/types";
 import { formatARS } from "@/lib/format";
+
+const PRODUCT_BADGE: Record<Product, string> = {
+  Procesos: "bg-indigo-50 text-indigo-700 ring-1 ring-indigo-200",
+  Estrategia: "bg-violet-50 text-violet-700 ring-1 ring-violet-200",
+};
 
 interface CardProps {
   opportunity: Opportunity;
@@ -42,6 +47,18 @@ export default function Card({ opportunity, onClick, overlay = false }: CardProp
       <p className="mt-2 text-base font-bold tracking-tight text-emerald-600">
         {formatARS(opportunity.monto)}
       </p>
+      {opportunity.productos.length > 0 && (
+        <div className="mt-2 flex flex-wrap gap-1">
+          {opportunity.productos.map((p) => (
+            <span
+              key={p}
+              className={`rounded-full px-2 py-0.5 text-[11px] font-medium ${PRODUCT_BADGE[p]}`}
+            >
+              {p}
+            </span>
+          ))}
+        </div>
+      )}
     </button>
   );
 }

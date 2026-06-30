@@ -16,15 +16,15 @@ import { GoogleSpreadsheet } from "google-spreadsheet";
 import { JWT } from "google-auth-library";
 
 const SHEET_TITLE = "Oportunidades";
-const HEADERS = ["id", "contacto", "empresa", "monto", "etapa"];
+const HEADERS = ["id", "contacto", "empresa", "monto", "etapa", "productos"];
 
 const SEED = [
-  { contacto: "Juan Pérez", empresa: "Distri Sur", monto: 1500000, etapa: "Lead" },
-  { contacto: "Ana Gómez", empresa: "New Flex", monto: 3200000, etapa: "Contactado" },
-  { contacto: "Carlos Ruiz", empresa: "Baigún Realty", monto: 850000, etapa: "Propuesta" },
-  { contacto: "Laura Méndez", empresa: "Grupo Avenew", monto: 5400000, etapa: "Lead" },
-  { contacto: "Diego Torres", empresa: "Escribanía Reyes", monto: 1200000, etapa: "Contactado" },
-  { contacto: "Sofía Castro", empresa: "San Joaquín", monto: 2750000, etapa: "Cerrado" },
+  { contacto: "Juan Pérez", empresa: "Distri Sur", monto: 1500000, etapa: "Lead", productos: "Procesos" },
+  { contacto: "Ana Gómez", empresa: "New Flex", monto: 3200000, etapa: "Contactado", productos: "Estrategia" },
+  { contacto: "Carlos Ruiz", empresa: "Baigún Realty", monto: 850000, etapa: "Propuesta", productos: "Procesos,Estrategia" },
+  { contacto: "Laura Méndez", empresa: "Grupo Avenew", monto: 5400000, etapa: "Lead", productos: "Estrategia" },
+  { contacto: "Diego Torres", empresa: "Escribanía Reyes", monto: 1200000, etapa: "Contactado", productos: "Procesos" },
+  { contacto: "Sofía Castro", empresa: "San Joaquín", monto: 2750000, etapa: "Cerrado", productos: "Procesos,Estrategia" },
 ];
 
 async function main() {
@@ -59,6 +59,7 @@ async function main() {
       empresa: row.empresa,
       monto: String(row.monto),
       etapa: row.etapa,
+      productos: row.productos,
     });
     console.log(`+ ${row.contacto} (${row.empresa})`);
   }

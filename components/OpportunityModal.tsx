@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { STAGES, type Opportunity, type Stage } from "@/lib/types";
+import { PRODUCTS, STAGES, type Opportunity, type Product, type Stage } from "@/lib/types";
 
 export interface OpportunityFormValues {
   contacto: string;
   empresa: string;
   monto: number;
   etapa: Stage;
+  productos: Product[];
 }
 
 interface OpportunityModalProps {
@@ -33,6 +34,7 @@ export default function OpportunityModal({
     opportunity ? String(opportunity.monto) : ""
   );
   const [etapa, setEtapa] = useState<Stage>(opportunity?.etapa ?? defaultStage);
+  const [productos, setProductos] = useState<Product[]>(opportunity?.productos ?? []);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -66,6 +68,7 @@ export default function OpportunityModal({
         empresa: empresa.trim(),
         monto: montoNum,
         etapa,
+        productos,
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error al guardar.");
@@ -84,6 +87,12 @@ export default function OpportunityModal({
       setError(err instanceof Error ? err.message : "Error al eliminar.");
       setDeleting(false);
     }
+  }
+
+  function toggleProducto(p: Product) {
+    setProductos((prev) =>
+      prev.includes(p) ? prev.filter((x) => x !== p) : [...prev, p]
+    );
   }
 
   const busy = saving || deleting;
@@ -170,6 +179,34 @@ export default function OpportunityModal({
                 </option>
               ))}
             </select>
+          </div>
+
+          <div>
+            <span className="mb-1 block text-sm font-medium text-slate-700">
+              Productos
+            </span>
+            <div className="flex flex-wrap gap-2">
+              {PRODUCTS.map((p) => {
+                const active = productos.includes(p);
+                return (
+                  <button
+                    key={p}
+                    type="button"
+                    onClick={() => toggleProducto(p)}
+                    aria-pressed={active}
+                    className={[
+                      "rounded-lg border px-3 py-1.5 text-sm font-medium transition-colors",
+                      active
+                        ? "border-indigo-500 bg-indigo-50 text-indigo-700"
+                        : "border-slate-300 bg-white text-slate-600 hover:bg-slate-50",
+                    ].join(" ")}
+                  >
+                    {active ? "✓ " : ""}
+                    {p}
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
           {error && (

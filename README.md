@@ -21,11 +21,13 @@ Sin autenticación, listo para deploy en Vercel.
 ## Modelo de datos (Google Sheets)
 
 - Pestaña: **`Oportunidades`**
-- Columnas (header en fila 1): `id | contacto | empresa | monto | etapa`
+- Columnas (header en fila 1): `id | contacto | empresa | monto | etapa | productos`
 - `etapa`: uno de `Lead | Contactado | Propuesta | Cerrado`
 - `monto`: número entero (se formatea solo en la UI)
+- `productos`: lista separada por comas con cualquier combinación de `Procesos | Estrategia` (puede estar vacía)
 
-Si la pestaña no existe, la app la crea automáticamente con sus headers.
+Si la pestaña no existe, la app la crea automáticamente con sus headers. Si ya existía
+sin la columna `productos`, la app la agrega al final automáticamente.
 
 ## Arquitectura
 
