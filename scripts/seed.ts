@@ -19,12 +19,12 @@ const SHEET_TITLE = "Oportunidades";
 const HEADERS = ["id", "contacto", "empresa", "monto", "etapa", "productos"];
 
 const SEED = [
-  { contacto: "Juan Pérez", empresa: "Distri Sur", monto: 1500000, etapa: "Lead", productos: "Procesos" },
-  { contacto: "Ana Gómez", empresa: "New Flex", monto: 3200000, etapa: "Contactado", productos: "Estrategia" },
-  { contacto: "Carlos Ruiz", empresa: "Baigún Realty", monto: 850000, etapa: "Propuesta", productos: "Procesos,Estrategia" },
-  { contacto: "Laura Méndez", empresa: "Grupo Avenew", monto: 5400000, etapa: "Lead", productos: "Estrategia" },
-  { contacto: "Diego Torres", empresa: "Escribanía Reyes", monto: 1200000, etapa: "Contactado", productos: "Procesos" },
-  { contacto: "Sofía Castro", empresa: "San Joaquín", monto: 2750000, etapa: "Cerrado", productos: "Procesos,Estrategia" },
+  { contacto: "Martín Aguirre", empresa: "Lumina Software", monto: 1500000, etapa: "Lead", productos: "Procesos" },
+  { contacto: "Valentina Ríos", empresa: "Nexora Logística", monto: 3200000, etapa: "Contactado", productos: "Estrategia" },
+  { contacto: "Tomás Belmonte", empresa: "Aurelia Inmobiliaria", monto: 850000, etapa: "Propuesta", productos: "Procesos,Estrategia" },
+  { contacto: "Camila Sotelo", empresa: "Vértice Industrial", monto: 5400000, etapa: "Lead", productos: "Estrategia" },
+  { contacto: "Lucas Ferreyra", empresa: "Delta Notariado", monto: 1200000, etapa: "Contactado", productos: "Procesos" },
+  { contacto: "Renata Ibáñez", empresa: "Monteverde Agro", monto: 2750000, etapa: "Cerrado", productos: "Procesos,Estrategia" },
 ];
 
 async function main() {
