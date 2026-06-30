@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  background-color: #f4f5f7;
+  color: #101828;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar sutil para las columnas */
+.kanban-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+.kanban-scroll::-webkit-scrollbar-thumb {
+  background-color: rgba(16, 24, 40, 0.15);
+  border-radius: 9999px;
+}
+.kanban-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
