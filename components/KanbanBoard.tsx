@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import {
   DndContext,
   DragOverlay,
@@ -164,12 +165,20 @@ export default function KanbanBoard() {
             <span className="font-semibold text-emerald-600">{formatARS(total)}</span>
           </p>
         </div>
-        <button
-          onClick={() => setModal({ mode: "create" })}
-          className="rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-slate-800"
-        >
-          + Nueva oportunidad
-        </button>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/dashboard"
+            className="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition-colors hover:bg-slate-50"
+          >
+            📊 Dashboard
+          </Link>
+          <button
+            onClick={() => setModal({ mode: "create" })}
+            className="rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-slate-800"
+          >
+            + Nueva oportunidad
+          </button>
+        </div>
       </header>
 
       {loadError && (
