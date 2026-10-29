@@ -5,10 +5,11 @@ import { isStage, normalizeProductos, type Opportunity } from "@/lib/types";
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
-type Params = { params: { id: string } };
+type Params = { params: Promise<{ id: string }> };
 
 // PATCH /api/opportunities/[id] -> actualiza etapa u otros campos
-export async function PATCH(req: Request, { params }: Params) {
+export async function PATCH(req: Request, props: Params) {
+  const params = await props.params;
   try {
     const body = await req.json();
     const patch: Partial<Omit<Opportunity, "id">> = {};
@@ -51,7 +52,8 @@ export async function PATCH(req: Request, { params }: Params) {
 }
 
 // DELETE /api/opportunities/[id] -> elimina la fila
-export async function DELETE(_req: Request, { params }: Params) {
+export async function DELETE(_req: Request, props: Params) {
+  const params = await props.params;
   try {
     const ok = await deleteOpportunity(params.id);
     if (!ok) {
